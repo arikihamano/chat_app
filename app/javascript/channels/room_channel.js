@@ -1,15 +1,19 @@
 import consumer from "./consumer";
 
-consumer.subscriptions.create("RoomChannel", {
-  connected() {
-    // Called when the subscription is ready for use on the server
-  },
+document.addEventListener("turbolinks:load", () => {
+  window.messageContainer = document.getElementById("message-container");
 
-  disconnected() {
-    // Called when the subscription has been terminated by the server
-  },
+  if (messageContainer == null) {
+    return;
+  }
 
-  received(data) {
-    // Called when there's incoming data on the websocket for this channel
-  },
+  consumer.subscriptions.create("RoomChannel", {
+    connected() {},
+
+    disconnected() {},
+
+    received(data) {
+      messageContainer.insertAdjacentHTML("beforeend", data["message"]);
+    },
+  });
 });
